@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <button class="download">下载</button>
+  </div>
+  <div>
+    <button class="abort">终止下载</button>
+  </div>
+  <script>
+    let controller;
+    const url = "video.mp4";
+
+    const downloadBtn = document.querySelector(".download");
+    const abortBtn = document.querySelector(".abort");
+
+    downloadBtn.addEventListener("click", fetchVideo);
+
+    abortBtn.addEventListener("click", () => {
+      if (controller) {
+        controller.abort();
+        console.log("中止下载");
+      }
+    });
+
+    function fetchVideo() {
+      controller = new AbortController();
+      const signal = controller.signal;
+      fetch(url, { signal })
+        .then((response) => {
+          console.log("下载完成", response);
+        })
+        .catch((err) => {
+          console.error(`下载错误：${err.message}`);
+        });
+    }
+  </script>
+</body>
+
+</html>
